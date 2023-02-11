@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { TransactionType } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { TransactionEntity } from 'src/transactions/transaction.entity';
 import { BankEntity } from './bank.entity';
 import { CreateBankDto } from './dto/create-bank.dto';
 
@@ -39,6 +41,30 @@ export class BankService {
         id,
       },
       data,
+    });
+  }
+
+  async updateBalance(
+    transaction: TransactionEntity,
+    creating = true,
+  ): Promise<BankEntity> {
+    let balance: number = transaction.bank.balance;
+    if (
+      (transaction.type === TransactionType.profitable && creating) ||
+      (transaction.type === TransactionType.consumable && !creating)
+    ) {
+      balance += transaction.amount;
+    } else {
+      balance -= transaction.amount;
+    }
+
+    return await this.prisma.bank.update({
+      where: {
+        id: transaction.bank.id,
+      },
+      data: {
+        balance,
+      },
     });
   }
 

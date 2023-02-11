@@ -19,6 +19,14 @@ export class CategoryService {
     });
   }
 
+  async findByIds(ids: number[]): Promise<CategoryEntity[]> {
+    return await this.prisma.category.findMany({
+      where: {
+        id: { in: ids },
+      },
+    });
+  }
+
   async create(data: CreateCategoryDto): Promise<CategoryEntity> {
     return await this.prisma.category.create({ data });
   }

@@ -6,10 +6,9 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Post,
   Put,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -48,8 +47,8 @@ export class BankController {
     type: BankEntity,
   })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Bank not found' })
-  async findById(@Param('id') id: string) {
-    const bank = await this.bankService.findById(Number(id));
+  async findById(@Param('id', ParseIntPipe) id: number) {
+    const bank = await this.bankService.findById(id);
     if (!bank) {
       throw new HttpException('Bank not found', HttpStatus.NOT_FOUND);
     }
@@ -58,7 +57,6 @@ export class BankController {
   }
 
   @Post()
-  @UsePipes(new ValidationPipe())
   @ApiOperation({ summary: 'Create a bank' })
   @ApiBody({ type: CreateBankDto })
   @ApiResponse({
@@ -83,7 +81,6 @@ export class BankController {
   }
 
   @Put(':id')
-  @UsePipes(new ValidationPipe())
   @ApiOperation({ summary: 'Update a bank by specified id' })
   @ApiParam({ name: 'id', required: true, description: 'Bank identifier' })
   @ApiBody({ type: CreateBankDto })
@@ -100,8 +97,11 @@ export class BankController {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Bank with mfo exist',
   })
-  async update(@Param('id') id: string, @Body() bankData: CreateBankDto) {
-    const bank = await this.bankService.findById(Number(id));
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() bankData: CreateBankDto,
+  ) {
+    const bank = await this.bankService.findById(id);
     if (!bank) {
       throw new HttpException(
         'Bank for update not found',
@@ -117,7 +117,7 @@ export class BankController {
       );
     }
 
-    return await this.bankService.update(Number(id), bankData);
+    return await this.bankService.update(id, bankData);
   }
 
   @Delete(':id')
@@ -132,8 +132,8 @@ export class BankController {
     status: HttpStatus.NOT_FOUND,
     description: 'Bank for delete not found',
   })
-  async delete(@Param('id') id: string) {
-    const bank = await this.bankService.findById(Number(id));
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    const bank = await this.bankService.findById(id);
     if (!bank) {
       throw new HttpException(
         'Bank for delete not found',

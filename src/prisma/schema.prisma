@@ -20,10 +20,11 @@ model Bank {
 }
 
 model Transaction {
-  id         Int        @id @unique() @default(autoincrement())
+  id         Int             @id @unique() @default(autoincrement())
   amount     Float
-  bank       Bank       @relation(fields: [bankId], references: [id])
+  bank       Bank            @relation(fields: [bankId], references: [id])
   bankId     Int
+  type       TransactionType
   categories Category[]
 }
 

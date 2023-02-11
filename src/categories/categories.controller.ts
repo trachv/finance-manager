@@ -8,8 +8,7 @@ import {
   Delete,
   HttpException,
   HttpStatus,
-  UsePipes,
-  ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   ApiBody,
@@ -51,8 +50,8 @@ export class CategoryController {
     status: HttpStatus.NOT_FOUND,
     description: 'Category not found',
   })
-  async findById(@Param('id') id: string) {
-    const category = await this.categoryService.findById(Number(id));
+  async findById(@Param('id', ParseIntPipe) id: number) {
+    const category = await this.categoryService.findById(id);
     if (!category) {
       throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
@@ -60,7 +59,6 @@ export class CategoryController {
   }
 
   @Post()
-  @UsePipes(new ValidationPipe())
   @ApiOperation({ summary: 'Create a category' })
   @ApiBody({ type: CreateCategoryDto })
   @ApiResponse({
@@ -86,17 +84,17 @@ export class CategoryController {
     description: 'Category for update not found',
   })
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() categoryData: CreateCategoryDto,
   ) {
-    const category = await this.categoryService.findById(Number(id));
+    const category = await this.categoryService.findById(id);
     if (!category) {
       throw new HttpException(
         'Category for update not found',
         HttpStatus.NOT_FOUND,
       );
     }
-    return await this.categoryService.update(Number(id), categoryData);
+    return await this.categoryService.update(id, categoryData);
   }
 
   @Delete(':id')
@@ -111,8 +109,8 @@ export class CategoryController {
     status: HttpStatus.NOT_FOUND,
     description: 'Category to delete not found',
   })
-  async delete(@Param('id') id: string) {
-    const category = await this.categoryService.findById(Number(id));
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    const category = await this.categoryService.findById(id);
     if (!category) {
       throw new HttpException(
         'Category to delete not found',
