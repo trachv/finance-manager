@@ -12,19 +12,25 @@ datasource db {
 }
 
 model Bank {
-  id      Int    @id @default(autoincrement())
-  name    String
-  balance Float
+  id           Int           @id @unique() @default(autoincrement())
+  name         String
+  balance      Float?        @default(0)
+  mfo          String        @unique() @default("")
+  transactions Transaction[]
 }
 
 model Transaction {
-  id     Int   @id @default(autoincrement())
-  amount Float
+  id         Int        @id @unique() @default(autoincrement())
+  amount     Float
+  bank       Bank       @relation(fields: [bankId], references: [id])
+  bankId     Int
+  categories Category[]
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
+  id          Int           @id @unique() @default(autoincrement())
+  name        String
+  trasactions Transaction[]
 }
 
 enum TransactionType {
