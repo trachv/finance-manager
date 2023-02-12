@@ -62,9 +62,13 @@ export class CategoryController {
   @ApiOperation({ summary: 'Create a category' })
   @ApiBody({ type: CreateCategoryDto })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     description: 'Success',
     type: CategoryEntity,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async create(@Body() category: CreateCategoryDto) {
     return await this.categoryService.create(category);
@@ -82,6 +86,10 @@ export class CategoryController {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: 'Category for update not found',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async update(
     @Param('id', ParseIntPipe) id: number,

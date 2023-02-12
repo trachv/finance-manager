@@ -59,7 +59,7 @@ export class TransactionController {
   @ApiOperation({ summary: 'Create new transactions' })
   @ApiBody({ type: CreateTransactionDto })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     description: 'Success',
     type: TransactionEntity,
   })
@@ -75,6 +75,10 @@ export class TransactionController {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description:
       'Some of sended categories type not equal to sended transaction type',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async create(@Body() transactionData: CreateTransactionDto) {
     const bank = await this.bankService.findById(transactionData.bankId);

@@ -60,13 +60,17 @@ export class BankController {
   @ApiOperation({ summary: 'Create a bank' })
   @ApiBody({ type: CreateBankDto })
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
     description: 'Success',
     type: BankEntity,
   })
   @ApiResponse({
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Bank with mfo exist',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async create(@Body() bankData: CreateBankDto) {
     const bankByMfo = await this.bankService.findByMfo(bankData.mfo);
@@ -96,6 +100,10 @@ export class BankController {
   @ApiResponse({
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Bank with mfo exist',
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async update(
     @Param('id', ParseIntPipe) id: number,

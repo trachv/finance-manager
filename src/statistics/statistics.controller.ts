@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionByCategoryDto } from './dto/transaction-by-category.dto';
 import { TransactionByCategory } from './statistics.entity';
@@ -9,7 +9,8 @@ import { StatisticService } from './statistics.service';
 export class StatisticController {
   constructor(private readonly statisticService: StatisticService) {}
 
-  @Get()
+  @Post()
+  @HttpCode(200)
   @ApiOperation({ summary: 'Get statistic transactions by category' })
   @ApiBody({ type: TransactionByCategoryDto })
   @ApiResponse({
@@ -17,6 +18,10 @@ export class StatisticController {
     description: 'Success',
     type: TransactionByCategory,
     isArray: true,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'Error validation',
   })
   async transactionsByCategory(
     @Body() transactionByCategoryDto: TransactionByCategoryDto,
