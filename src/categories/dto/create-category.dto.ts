@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { TransactionTypes } from 'src/transactions/dto/transaction-type.dto';
+import { TransactionTypes } from '../../transactions/dto/transaction-type.dto';
 
 export class CreateCategoryDto {
   @IsNotEmpty()

@@ -18,8 +18,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { BankService } from 'src/banks/banks.service';
-import { CategoryService } from 'src/categories/categories.service';
+import { BankService } from '../banks/banks.service';
+import { CategoryService } from '../categories/categories.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { ListAllTransactions } from './dto/list-all-transactions.dto';
 import { ListTransactionEntity, TransactionEntity } from './transaction.entity';

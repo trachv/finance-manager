@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionType } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 

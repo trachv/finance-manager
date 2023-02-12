@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TransactionType } from '@prisma/client';
-import { BankEntity } from 'src/banks/bank.entity';
-import { CategoryEntity } from 'src/categories/category.entity';
+import { BankEntity } from '../banks/bank.entity';
+import { CategoryEntity } from '../categories/category.entity';
 
 export class TransactionEntity {
   @ApiProperty({ description: 'Transaction identifier', nullable: true })
