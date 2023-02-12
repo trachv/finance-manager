@@ -68,6 +68,7 @@ export class TransactionService {
             return { id: catId };
           }),
         },
+        createdAt: new Date(),
       },
       select: {
         id: true,

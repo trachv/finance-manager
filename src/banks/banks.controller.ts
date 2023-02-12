@@ -132,6 +132,10 @@ export class BankController {
     status: HttpStatus.NOT_FOUND,
     description: 'Bank for delete not found',
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Bank used in another objects, cannot be deleted',
+  })
   async delete(@Param('id', ParseIntPipe) id: number) {
     const bank = await this.bankService.findById(id);
     if (!bank) {
@@ -140,6 +144,16 @@ export class BankController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return await this.bankService.delete(Number(id));
+
+    const allowedToDelete = await this.bankService.allowedToDelete(id);
+
+    if (!allowedToDelete) {
+      throw new HttpException(
+        'Bank used in another objects, cannot be deleted',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return await this.bankService.delete(id);
   }
 }

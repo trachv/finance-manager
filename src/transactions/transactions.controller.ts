@@ -71,6 +71,11 @@ export class TransactionController {
     status: HttpStatus.UNPROCESSABLE_ENTITY,
     description: 'Some of sended categories were not found in database by ids',
   })
+  @ApiResponse({
+    status: HttpStatus.UNPROCESSABLE_ENTITY,
+    description:
+      'Some of sended categories type not equal to sended transaction type',
+  })
   async create(@Body() transactionData: CreateTransactionDto) {
     const bank = await this.bankService.findById(transactionData.bankId);
 
@@ -89,6 +94,16 @@ export class TransactionController {
     if (categories.length !== transactionData.categoryIds.length) {
       throw new HttpException(
         `Some of sended categories were not found in database by ids`,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    if (
+      categories.filter((c) => c.type === transactionData.type).length !==
+      categories.length
+    ) {
+      throw new HttpException(
+        `Some of sended categories type not equal to ${transactionData.type}`,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }

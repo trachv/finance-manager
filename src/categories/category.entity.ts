@@ -6,4 +6,7 @@ export class CategoryEntity {
 
   @ApiProperty({ description: 'Category name', nullable: true })
   name: string;
+
+  @ApiProperty({ description: 'Category type', nullable: true })
+  type: string;
 }

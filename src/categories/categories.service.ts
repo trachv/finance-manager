@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { TransactionType } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -28,7 +29,12 @@ export class CategoryService {
   }
 
   async create(data: CreateCategoryDto): Promise<CategoryEntity> {
-    return await this.prisma.category.create({ data });
+    return await this.prisma.category.create({
+      data: {
+        ...data,
+        type: data.type as TransactionType,
+      },
+    });
   }
 
   async update(id: number, data: CreateCategoryDto): Promise<CategoryEntity> {
@@ -36,8 +42,25 @@ export class CategoryService {
       where: {
         id,
       },
-      data,
+      data: {
+        ...data,
+        type: data.type as TransactionType,
+      },
     });
+  }
+
+  async allowedToDelete(id: number): Promise<boolean> {
+    const transactions = await this.prisma.transaction.findMany({
+      where: {
+        categories: {
+          some: {
+            id,
+          },
+        },
+      },
+    });
+
+    return transactions.length > 0 ? false : true;
   }
 
   async delete(id: number): Promise<CategoryEntity> {

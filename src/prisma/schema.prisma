@@ -26,11 +26,13 @@ model Transaction {
   bankId     Int
   type       TransactionType
   categories Category[]
+  createdAt  DateTime
 }
 
 model Category {
-  id          Int           @id @unique() @default(autoincrement())
+  id          Int             @id @unique() @default(autoincrement())
   name        String
+  type        TransactionType
   trasactions Transaction[]
 }
 

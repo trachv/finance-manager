@@ -68,6 +68,22 @@ export class BankService {
     });
   }
 
+  async allowedToDelete(id: number): Promise<boolean> {
+    const transactions = await this.prisma.transaction.findMany({
+      where: {
+        bank: {
+          id,
+        },
+      },
+    });
+
+    if (transactions.length) {
+      return false;
+    }
+
+    return true;
+  }
+
   async delete(id: number): Promise<BankEntity> {
     return await this.prisma.bank.delete({
       where: {

@@ -109,6 +109,10 @@ export class CategoryController {
     status: HttpStatus.NOT_FOUND,
     description: 'Category to delete not found',
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: 'Category used in another objects, cannot be deleted',
+  })
   async delete(@Param('id', ParseIntPipe) id: number) {
     const category = await this.categoryService.findById(id);
     if (!category) {
@@ -117,6 +121,16 @@ export class CategoryController {
         HttpStatus.NOT_FOUND,
       );
     }
-    return await this.categoryService.delete(Number(id));
+
+    const allowedToDelete = await this.categoryService.allowedToDelete(id);
+
+    if (!allowedToDelete) {
+      throw new HttpException(
+        'Category used in another objects, cannot be deleted',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return await this.categoryService.delete(id);
   }
 }
