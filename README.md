@@ -18,3 +18,8 @@ After make it steps runs 2 containers:
 ## Swagger API docs
 
 http://localhost:3000/api/docs
+
+## Testing
+
+1. For unit tests run `npm run test`
+2. For e2e tests run `npm run test:e2e`
