@@ -30,4 +30,4 @@ http://localhost:3000/api/docs
 2. Add import by path alias (@)
 3. Cover the entire project with tests
 4. Add logging module and connect provider for aggregate logs, like https://www.datadoghq.com/ 
-5. Improve protect before deleling categories, maibe use ON DELETE RESCTICT for relations beetwen categories and transactions in migration
+5. Improve protect before deleling categories, may be use ON DELETE RESCTICT for relations beetwen categories and transactions in migration
