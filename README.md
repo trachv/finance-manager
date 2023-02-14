@@ -23,3 +23,11 @@ http://localhost:3000/api/docs
 
 1. For unit tests run `npm run test`
 2. For e2e tests run `npm run test:e2e`
+
+## Improwment before production
+
+1. Add auth for transaction webhook
+2. Add import by path alias (@)
+3. Cover the entire project with tests
+4. Add logging module and connect provider for aggregate logs, like https://www.datadoghq.com/ 
+5. Improve protect before deleling categories, maibe use ON DELETE RESCTICT for relations beetwen categories and transactions in migration
