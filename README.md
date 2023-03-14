@@ -10,7 +10,7 @@ Finance manager app test project
 4. Run `docker-compose up -d` to setup local environment with Docker
 5. Run `npx prisma migrate dev` to run local database migrations
 
-After make it steps runs 2 containers:
+After completing these steps, 2 containers will be launched:
 
 - api application
 - postgresql for testing
